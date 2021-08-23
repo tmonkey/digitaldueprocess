@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Digital Due Process: Scoring EcoSystem Map</title>
+    <style>
+      .bubbles {
+        stroke-width: 1px;
+        stroke: white;
+      }
+      .bubbles:hover {
+        stroke: black;
+      }
+      #tooltip {
+        font-family:Arial, Helvetica, sans-serif;
+      }
+      .category { text-transform: uppercase; font-size:.7em;}
+    </style>
+  </head>
+
+  <body>
+    <button id="recenter">Recenter</button>
+    <button id="disperse">Disperse</button><br/>
+    <button id="job">Getting a job</button>
+    <button id="college">Getting into college</button>
+    <button id="promoted">Getting promoted</button>
+    <button id="shopping">Shopping Online</button>
+    <button id="house">Purchasing a House</button>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/d3-force-cluster@latest"></script>
+    <script>
+
+var width = 1200,
+    height = 700,
+    padding = 1.5, // separation between same-color nodes
+    clusterPadding = 50, // separation between different-color nodes
+    maxRadius = 10,
+    margin = 150;
+  
+var data = {
+    "nodes":[{"index":0,"name":"Myers Briggs Type Indicator","category":"Employment","keeper":"Myers & Briggs  Foundation","cluster":1,"measures":"psychological personality preference","scenario":"Getting a job","type":"exam-type"},
+{"index":1,"name":"SAT","category":"Education","keeper":"College Board","cluster":0,"measures":"high school education and college preparedness","scenario":"Getting into college","type":"exam-type"},
+{"index":2,"name":"Hirevue's Pre-Employment Assessment","category":"Employment","keeper":"Hirevue","cluster":1,"measures":"potential to be a high performing employee","scenario":"Getting a job","type":"exam-type"},
+{"index":3,"name":"Turnitin's Similiarity Score","category":"Education","keeper":"Turnitin, LLC, a subsidiary of Advance Publications","cluster":0,"measures":"how similiar the submitted content is to existing content (i.e. did the author plagiarize)","scenario":"Getting into college","type":"automatically calculated score"},
+{"index":4,"name":"Expected Family Contribution (EFC)","category":"Education","keeper":"US Department of Education","cluster":0,"measures":"1. Original purpose: how much federal student financial assistance is offered by the U.S. Dept. of Education.","scenario":"Getting into college","type":"automatically calculated score"},
+{"index":5,"name":"PMAP (Performance Management Appraisal Program)","category":"Public Services","keeper":"Department of Health and Human Services (HHS)","cluster":6,"measures":"The performance of a government employee in HHS ","scenario":"Getting promoted","type":"automatically calculated score"},
+{"index":6,"name":"Sift's Trust Score","category":"Consumer","keeper":"Sift","cluster":2,"measures":"Consumer's trustworthiness and likelihood to commit credit card fraud.","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":7,"name":"SecureAuth's Risk Score","category":"Consumer","keeper":"SecureAuth","cluster":2,"measures":"Determine a web visitor's risk level","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":8,"name":"ACT","category":"Education","keeper":"ACT, Inc","cluster":0,"measures":"skills that are most important for success in postsecondary education and that are acquired in secondary education.","scenario":"Getting into college","type":"exam-type"},
+{"index":9,"name":"GPA","category":"Education","keeper":"Each individual educational institution","cluster":0,"measures":"academic achievement","scenario":"Getting into college","type":"aggregated rating"},
+{"index":10,"name":"Regents Exam (New York State Test)","category":"Education","keeper":"New York State Education Department","cluster":0,"measures":"Proficiency in subjects learned in high school","scenario":"Getting into college","type":"aggregated rating"},
+{"index":11,"name":"Advanced Placement (AP)","category":"Education","keeper":"college board","cluster":0,"measures":"how qualified a student is to receive college credit and placement.","scenario":"Getting into college","type":"exam-type"},
+{"index":12,"name":"TOEFL iBT®","category":"Education","keeper":"ETS (Educational Testing Service)","cluster":0,"measures":"English proficiency in an academic context","scenario":"Getting into college","type":"exam-type"},
+{"index":13,"name":"IELTS","category":"Education","keeper":"It is jointly managed by the British Council, IDP: IELTS Australia and Cambridge Assessment English","cluster":0,"measures":"One's ability to listen, read, write and speak in English","scenario":"Getting into college","type":"exam-type"},
+{"index":14,"name":"DuoLingo English Test","category":"Education","keeper":"DuoLingo","cluster":0,"measures":"English proficiency; assessment of real-world language ability and measures real-world usage","scenario":"Getting into college","type":"exam-type"},
+{"index":15,"name":"Cambridge English Scale Score","category":"Education","keeper":"Cambridge Assessment English. Part of the University of Cambridge","cluster":0,"measures":"English proficiency for career or higher education purposes.","scenario":"Getting into college","type":"exam-type"},
+{"index":16,"name":"TOEIC® Listening and Reading Test","category":"Education","keeper":"ETS (Educational Testing Service)","cluster":0,"measures":"English listening and reading proficiency in workplace","scenario":"Getting into college","type":"exam-type"},
+{"index":17,"name":"TOEIC® Speaking and Writing Test","category":"Education","keeper":"ETS (Educational Testing Service)","cluster":0,"measures":"English speaking and writing proficiency in workplace","scenario":"Getting into college","type":"exam-type"},
+{"index":18,"name":"Common European Framework of Reference (CEFR) for Languages: Learning, Teaching, Assessment","category":"Education","keeper":"Council of Europe","cluster":0,"measures":"Proficiency in european languages","scenario":"Getting into college","type":"exam-type"},
+{"index":19,"name":"h-index","category":"Education","keeper":"The index is proposed by J.E. Hirsch in 2005 and published in the Proceedings of the National Academy of Sciences of the United States of America.","cluster":0,"measures":"The cumulative impact of an author's scholarly output and performance.","scenario":"Getting promoted","type":"automatically calculated score"},
+{"index":20,"name":"Rate My Professors","category":"Education","keeper":"Cheddar, a streaming video company","cluster":0,"measures":"How well a professor teaches the course material, and how helpful they are both inside and outside of the classroom. Is the professor available for additional help after class or during office hours? Is the professor approachable, nice and easy to communicate with?","scenario":"Getting promoted","type":"aggregated rating"},
+{"index":21,"name":"Canvas's Engagement Index","category":"Education","keeper":"Canvas","cluster":0,"measures":"Degree of student participation and engagement","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":22,"name":"Grammarly's Readability Score","category":"Education","keeper":"Grammarly","cluster":0,"measures":"Readability. It claims to measure how easy or difficult it is to understand a piece of text.","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":23,"name":"iClicker's Score","category":"Education","keeper":"REEF Education","cluster":0,"measures":"Performance points refer to whether or not the student got the question correct; participation points refer to whether or not the student submitted an answer.","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":24,"name":"Flesch reading-ease score (FRES)","category":"Education","keeper":"developed under contract to the U.S. Navy in 1975 by J. Peter Kincaid and his team","cluster":0,"measures":"Readability","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":25,"name":"Flesch–Kincaid Grade Level","category":"Education","keeper":"Bain & Company Partner Fred Reichheld","cluster":0,"measures":"Readability","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":26,"name":"Zillow's Home Value Index (ZHVI)","category":"Consumer","keeper":"Zillow","cluster":2,"measures":"The typical home value and market changes across a given region and housing type","scenario":"Purchasing a house","type":"automatically calculated score"},
+{"index":27,"name":"Zillow's Zestimate","category":"Consumer","keeper":"Zillow","cluster":2,"measures":"Estimated market value for a property","scenario":"Purchasing a house","type":"automatically calculated score"},
+{"index":28,"name":"Redfin's Estimate","category":"Consumer","keeper":"Redfin","cluster":2,"measures":"Estimated market value for a property","scenario":"Purchasing a house","type":"automatically calculated score"},
+{"index":29,"name":"Walk Score’s Transit Score","category":"Consumer","keeper":"Walk Score","cluster":2,"measures":"how well a location is served by public transportation","scenario":"Purchasing a house","type":"automatically calculated score"},
+{"index":30,"name":"Walk Score's Bike Score","category":"Consumer","keeper":"Walk Score","cluster":2,"measures":"whether an area is good for biking.","scenario":"Purchasing a house","type":"automatically calculated score"},
+{"index":31,"name":"Walk Score’s Walk Score","category":"Consumer","keeper":"Walk Score","cluster":2,"measures":"walkability of an area, including access to amenities","scenario":"Purchasing a house","type":"automatically calculated score"},
+{"index":32,"name":"National Walkability Index (NWI)","category":"Public Services","keeper":"United States Environmental Protection Agency","cluster":6,"measures":"walkability of an area","scenario":"Receiving support as communities","type":"automatically calculated score"},
+{"index":33,"name":"Net Promoter Score® (NPS®).","category":"Consumer","keeper":"Bain & Company Partner Fred Reichheld","cluster":2,"measures":"Customer loyalty. It aim is to establish what percentage of customers are happy with a marketer's product or service enough to recommend it to others.","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":34,"name":"Customer Satisfaction (CSAT) Score ","category":"Consumer","keeper":"Bain & Company Partner Fred Reichheld","cluster":2,"measures":"Customer's satisfaction with a product/service","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":35,"name":"Customer Effort Score (CES)","category":"Consumer","keeper":"The Corporate Executive Board (CEB Global, now Gartner)","cluster":2,"measures":"Level of effort that a customer experienced with a particular interaction.","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":36,"name":"Next Step Tool (NST) for Homeless Youth","category":"Public Services","keeper":"This score is generated by OrgCode Consulting Inc. and Community Solutions (other options exist, and it is not mandatory to use this one -housing agencies can choose)","cluster":6,"measures":"The vulnerability of youth.","scenario":"Receiving support as communities","type":"automatically calculated score"},
+{"index":37,"name":"VI-SPDAT (Vulnerability Index - Service Prioritization Decision Assistance Tool)","category":"Healthcare","keeper":"Department of Housing and Urban Development (HUD), OrgCode Consulting","cluster":4,"measures":"Degree of acuity, risk and prioritization when providing assistance to homeless and at-risk of homelessness persons.","scenario":"Receiving support as communities","type":"automatically calculated score"},
+{"index":38,"name":"SNAP benefits qualification","category":"Public Services","keeper":"United States Department of Agriculture (USDA), Food and Nutrition Service","cluster":6,"measures":"How much assistance a  household needs for regular consumption of nutritious food","scenario":"Receiving support as communities","type":"automatically calculated score"},
+{"index":39,"name":"Tinder's Desirability Score","category":"Social/Cultural Life","keeper":"Tinder","cluster":5,"measures":"Desirability in regards to dating ","scenario":"Finding a date","type":"automatically calculated score"},
+{"index":40,"name":"OkCupid's Match Score","category":"Social/Cultural Life","keeper":"OkCupid","cluster":5,"measures":"Compability between two potential partners","scenario":"Finding a date","type":"automatically calculated score"},
+{"index":41,"name":"DNA Match Confidence Score","category":"Social/Cultural Life","keeper":"AncestyDNA","cluster":5,"measures":"Degree of relatedness between two individuals","scenario":"Finding a date","type":"automatically calculated score"},
+{"index":42,"name":"STD Testing Score","category":"Healthcare","keeper":"Clinics and data subjects themselves (when administering self-tests)","cluster":4,"measures":"Likeihood to have a particular STD, namely syphilis, gonorrhea, and herpes","scenario":"Finding a date","type":"automatically calculated score"},
+{"index":43,"name":"Reddit's Karma Points","category":"Social/Cultural Life","keeper":"Reddit","cluster":5,"measures":"The degree of contirbution to the community.","scenario":"Articulating opinions in publics","type":"aggregated rating"},
+{"index":44,"name":"Facebook's Built-in Trust Score","category":"Social/Cultural Life","keeper":"Facebook","cluster":5,"measures":"Ths score indicates the reliability of the user's flagging behavior.","scenario":"Articulating opinions in publics","type":"automatically calculated score"},
+{"index":45,"name":"Twitter Bot Score","category":"Social/Cultural Life","keeper":"Botometer (the tool was built by researchers at the University of Southern California and the Center for Complex Networks and Systems Research at Indiana University)","cluster":5,"measures":"Likelihood for a Twitter account to be a bot.","scenario":"Articulating opinions in publics","type":"automatically calculated score"},
+{"index":46,"name":"reCAPTCHA Score","category":"Social/Cultural Life","keeper":"Google","cluster":5,"measures":"Likelihood for a user to be a human/bot.","scenario":"Articulating opinions in publics","type":"automatically calculated score"},
+{"index":47,"name":"Metascore","category":"Social/Cultural Life","keeper":"Metacritic (a Red Ventures Company)","cluster":5,"measures":"How well received the work is.","scenario":"Consuming cultural content","type":"aggregated rating"},
+{"index":48,"name":"Tomatometer","category":"Social/Cultural Life","keeper":"Rotten Tomatoes","cluster":5,"measures":"Ciritlal recommmendation of content","scenario":"Consuming cultural content","type":"aggregated rating"},
+{"index":49,"name":"Netflix's ","category":"Social/Cultural Life","keeper":"Netflix","cluster":5,"measures":"How likely a user will enjoy a particular TV shows or movie","scenario":"Consuming cultural content","type":"automatically calculated score"},
+{"index":50,"name":"Uber rider rating","category":"Consumer","keeper":"Uber","cluster":2,"measures":"How good/pleasant/well-behaved a passenger is","scenario":"Using On-Demand Service","type":"aggregated rating"},
+{"index":51,"name":"Lyft rider rating","category":"Consumer","keeper":"Lyft","cluster":2,"measures":"How good/pleasant/well-behaved a passenger is","scenario":"Using On-Demand Service","type":"aggregated rating"},
+{"index":52,"name":"Amazon's dynamic pricing (*Score comes in the form of a price for the buyer)","category":"Consumer","keeper":"Amazon","cluster":2,"measures":"Best fit for consumer","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":53,"name":"Investyles","category":"Consumer","keeper":"Equifax","cluster":2,"measures":"direct-measured financial assets and specific financial tendencies \n","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":54,"name":"Income360","category":"Consumer","keeper":"Equifax","cluster":2,"measures":"estimate of household income","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":55,"name":"WealthComplete","category":"Consumer","keeper":"Equifax","cluster":2,"measures":"estimate of consumers’ household-level total asset wealth and total deposit wealth (wealthCompleteDigital_ps).","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":56,"name":"Affluence Index","category":"Consumer","keeper":"Equifax","cluster":2,"measures":"household spending capacity","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":57,"name":"CreditStyles Pro","category":"Consumer","keeper":"Equifax","cluster":2,"measures":"estimated credit availability, needs, and usage","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":58,"name":"Aggregated FICO® Scores","category":"Credit Score","keeper":"Equifax","cluster":3,"measures":"aggregated model of  credit risk assessment measure ","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":59,"name":"Small Business Assets","category":"Consumer","keeper":"Equifax","cluster":2,"measures":"assets invested\nby small businesses","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":60,"name":"Ability to Pay Index","category":"Consumer","keeper":"Equifax","cluster":2,"measures":"ranks households from 1 to 1,000 based on their likely economic capacity.","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":61,"name":"PROS's dynamic pricing","category":"Consumer","keeper":"PROS","cluster":2,"measures":"Seat availability & customer demand to set prices to optimize profit","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":62,"name":"TransUnion CreditVision","category":"Credit Score","keeper":"TransUnion ","cluster":3,"measures":"creditworthiness","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":63,"name":"Symmetry® Episode Risk Groups® (ERG®)","category":"Healthcare","keeper":"Optum ","cluster":4,"measures":"Risk cost as proxy of health risk","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":64,"name":"Optum® Symmetry® Risk Groups® (PRG)","category":"Healthcare","keeper":"Optum ","cluster":4,"measures":"Risk cost as proxy of health risk","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":65,"name":"ACA Individual Risk Scores","category":"Healthcare","keeper":"Department of Health and Human Services/Affordable Care Act","cluster":4,"measures":"Risk in costs of an insurance provider enrolling sicker individuals - supposed to minimize adverse changes in insurance market after nondiscriminatory policy changes","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":66,"name":"Acute Physiology and Chronic Health Evalutation (APACHE) II","category":"Healthcare","keeper":"William Knaus (researcher)","cluster":4,"measures":"Severity of disease","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":67,"name":"Simplified Acute Physiology Scores (SAPS) II","category":"Healthcare","keeper":"Jean-Roger LeGall (researcher)","cluster":4,"measures":"Mortality estimate","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":68,"name":"Simple Triage Scoring System (STSS)","category":"Healthcare","keeper":"National to state to individual hospital level guidance. Modern medical triage originated from war treatment","cluster":4,"measures":"Priority score based on who is in most need of treatment","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":69,"name":"FICO AutoScore Fair Issac Corporation (FICO); individually calculated by three major national credit bureaus (Experian, Equifax, TransUnion)","category":"Credit Score","keeper":"Fair Issac Corporation (FICO)","cluster":3,"measures":"creditworthiness","scenario":"Granted car insurance","type":"automatically calculated score"},
+{"index":70,"name":"VantageScore®  4.0","category":"Credit Score","keeper":"VantageScore Solutions, LLC. (generated); Experian, Equifax, TransUnion (market the model, sell the credit scores, and manage credit report data)","cluster":3,"measures":"creditworthiness","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":71,"name":"FICO Expansion Score ","category":"Credit Score","keeper":"Fair Issac Corporation (FICO)","cluster":3,"measures":"creditworthiness","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":72,"name":"Equifax Decision 360","category":"Credit Score","keeper":"Equifax Inc.","cluster":3,"measures":"creditworthiness","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":73,"name":"McGill pain questionnaire ","category":"Healthcare","keeper":"Dr. Melzack from McGill University ","cluster":4,"measures":"pain (quality and intensity)","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":74,"name":"FICO® Safe Driving Score","category":"Credit Score","keeper":"Fair Issac Corporation (FICO)","cluster":3,"measures":"driver risk and safety based on driving behaviors, which facilitates consistency and fairness","scenario":"Granted car insurance","type":"automatically calculated score"},
+{"index":75,"name":"RiskView","category":"Credit Score","keeper":"LexisNexis","cluster":3,"measures":"creditworthiness","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":76,"name":"FICO® Score XD","category":"Credit Score","keeper":"Fair Issac Corporation (FICO)","cluster":3,"measures":"creditworthiness","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":77,"name":"SchoolDigger Ranking","category":"Education","keeper":"Claarware LLC.","cluster":0,"measures":"school performance and quality","scenario":"Purchasing a house","type":"aggregated rating"},
+{"index":78,"name":"Optum® Symmetry® EBM Connect®","category":"Healthcare","keeper":"Optum","cluster":4,"measures":"Patient care's compliance with medical procedure","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":79,"name":"Mosaic USA Consumer Lifestyle Segmentation","category":"Consumer","keeper":"Experian","cluster":2,"measures":"Mosaic’s data segments the US into 19 overarching groups and 71 underlying types","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":80,"name":"ASCVD (atherosclerotic cardiovascular disease) risk score","category":"Healthcare","keeper":"The American College of Cardiology","cluster":4,"measures":"risk of having a cardiovascular problem","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":81,"name":"ASSIGN (cardiovascualr disease risk score)","category":"Healthcare","keeper":"Dundee University, Scotland","cluster":4,"measures":"risk of cardiovascular disease","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":82,"name":"Framingham risk score (FRS)","category":"Healthcare","keeper":"National Institutes of Health","cluster":4,"measures":"risk of cardiovascular disease","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":83,"name":"QRISK®3","category":"Healthcare","keeper":"developed by doctors and academics working in the UK National Health Service","cluster":4,"measures":"risk of developing a heart attack or stroke over the next ten years","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":84,"name":"COMPAS ","category":"Public Services","keeper":"Northpointe","cluster":6,"measures":"risk of recidivism","scenario":"Receiving support as individuals","type":"automatically calculated score"},
+{"index":85,"name":"Allegheny Family Screening Tool, Predictive Risk Model (PRM)","category":"Public Services","keeper":"Allegheny County Department of Human Services","cluster":6,"measures":"whether or screen-in a referral for investigation","scenario":"Receiving support as communities","type":"automatically calculated score"},
+{"index":86,"name":"Allegheny County Community Need Index (CNI)","category":"Public Services","keeper":"Allegheny County Department of Human Services","cluster":6,"measures":"Community needs at greater risk of further economic decline","scenario":"Receiving support as communities","type":"automatically calculated score"},
+{"index":87,"name":"Child Opportunity Index 2.0","category":"Public Services","keeper":"The Institute for Child, Youth and Family Policy, Brandeis University","cluster":6,"measures":" An index of neighborhood features that help children develop in a healthy way","scenario":"Receiving support as communities","type":"automatically calculated score"},
+{"index":88,"name":"Get with the Guidelines–Heart Failure Risk Score (GWTG-HF Risk Score)","category":"Healthcare","keeper":"The American Heart Association","cluster":4,"measures":"In-hospital mortality for patients with acute heart failure","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":89,"name":"The Society of Thoracic Surgeon's Short Term Risk Calculator","category":"Healthcare","keeper":"The Society of Thoracic Surgeons","cluster":4,"measures":"Patient's risk of complication and death with most common cardiac surgeries","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":90,"name":"Estimated glomerular filtration rate (eGFR) ","category":"Healthcare","keeper":"National Kidney Foudnation","cluster":4,"measures":"Glomerular filtration rate (kidney function) ","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":91,"name":"Kindey Donor Risk Index (KDRI)","category":"Healthcare","keeper":"Organ Procurement and Transplantation Network","cluster":4,"measures":"Risk of donor kidney graft failure (viability of potential kidney donor)","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":92,"name":"STONE Score for Uncomplicated Ureteral Stone","category":"Healthcare","keeper":"MD Calc","cluster":4,"measures":"Risk of ureteral stone in patients with flank pain","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":93,"name":"Rectal Cancer Survival Calculator","category":"Healthcare","keeper":"MD Anderson Cancer Center","cluster":4,"measures":"Likelihood of survival 1-5 years after renal cancer diagnosis ","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":94,"name":"Breast Cancer Risk Assessment Tool (the Gail Model)","category":"Healthcare","keeper":"National Cancer Institute","cluster":4,"measures":"Risk of developing breast cancer over 5-years and over lifetime for women without prior history of breast cancer, DCIS, or LCIS ","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":95,"name":"Breast Cancer Surveillance Consortium (BCSC) Risk Calculator ","category":"Healthcare","keeper":"Breast Cancer Surveillance Consortium","cluster":4,"measures":"Risk of developing breast cancer over 5-years and 10-years for women without prior diagnosis of breast cancer or DCIS, breast augmentation, or prior masectomy","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":96,"name":"Osteoporosis Risk SCORE","category":"Healthcare","keeper":"MD App","cluster":4,"measures":"Risk level (low, medium, or high) of low bone density for women ","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":97,"name":"Fracture Risk Assessment Tool (FRAX)","category":"Healthcare","keeper":"Centre for Metabolic Bone Diseases, University of Sheffield, UK","cluster":4,"measures":"Risk of a hip fracture or other major osteoporotic fracture over 10-years ","scenario":"Receiving medical care","type":"automatically calculated score"},
+{"index":98,"name":"Apple Card program score","category":"Consumer","keeper":"Apple Inc. and Goldman Sachs (issuing back of the Apple Card)","cluster":2,"measures":"creditworthiness","scenario":"Granted a credit card","type":"automatically calculated score"},
+{"index":99,"name":"Consumer Report Rating","category":"Consumer","keeper":"Consumer Report","cluster":2,"measures":"how useful/worth it a product is","scenario":"Shopping online","type":"aggregated rating"},
+{"index":100,"name":"Niche College Ranking","category":"Education","keeper":"Niche","cluster":0,"measures":"how ","scenario":"Getting into college","type":"aggregated rating"},
+{"index":101,"name":"Niche High School Ranking","category":"Education","keeper":"Niche","cluster":0,"measures":"how ","scenario":"Purchasing a house","type":"aggregated rating"},
+{"index":102,"name":"Niche Neighborhood Ranking","category":"Consumer","keeper":"Niche","cluster":2,"measures":"how ","scenario":"Purchasing a house","type":"aggregated rating"},
+{"index":103,"name":"US News College Ranking","category":"Education","keeper":"US News","cluster":0,"measures":"how ","scenario":"Getting into college","type":"aggregated rating"},
+{"index":104,"name":"US News High School Ranking","category":"Consumer","keeper":"US News","cluster":2,"measures":"how ","scenario":"Purchasing a house","type":"aggregated rating"},
+{"index":105,"name":"USNew’s Neighborhood Ranking","category":"Consumer","keeper":"USNews","cluster":2,"measures":"how ","scenario":"Purchasing a house","type":"aggregated rating"},
+{"index":106,"name":"Predpol's Location Based Proactive Policing Tool","category":"Public Services","keeper":"Predpol (now Geolitica)","cluster":6,"measures":"predict where crimes will occur","scenario":"Receiving support as individuals","type":"automatically calculated score"},
+{"index":107,"name":"IBM Kenexa's Candidate Assessment","category":"Employment","keeper":"IBM","cluster":1,"measures":"how well-suited a job candidate is","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":108,"name":"ICIMS's Candidate Assessment","category":"Employment","keeper":"ICIMS","cluster":1,"measures":"how well-suited a job candidate is","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":109,"name":"Lever's Candidate Assessment","category":"Employment","keeper":"Lever","cluster":1,"measures":"how well-suited a job candidate is","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":110,"name":"Hacker Rank's Exam Score","category":"Employment","keeper":"Hacker Rank","cluster":1,"measures":"how good at programming a job candidate is","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":111,"name":"The Athena Quotient (AQ)","category":"Employment","keeper":"Athena Assessment","cluster":1,"measures":"the objective, accurate, measurement of the all-important, all-critical dimension of judgment, the same judgment that provides your unique value perspectives on life and work.","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":112,"name":"Hogan Personality Inventory (HPI)","category":"Employment","keeper":"Hogan","cluster":1,"measures":"bright-side personality – qualities that describe how we relate to others when we are at our best","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":113,"name":"Hogan Development Survey (HDS)","category":"Employment","keeper":"Hogan","cluster":1,"measures":"The dark side of personality, which are qualities that emerge when people are stresses, bored, or simply not paying attention to their behavior that hinder productivity, damage reputations, and derail peoples’ chances of success.","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":114,"name":"Motives, Values, Preferences Inventory (MVPI)","category":"Employment","keeper":"Hogan","cluster":1,"measures":"Personality from the inside – the core goals, values, drivers, and interests that determine what we desire and strive to attain.","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":115,"name":"The Caliper Profile","category":"Employment","keeper":"PSI Services / Caliper","cluster":1,"measures":"An individual’s personality characteristics and individual motivations in order to predict on-the-job behaviors and potential.","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":116,"name":"Berke's Employment Assessment","category":"Employment","keeper":"Berke","cluster":1,"measures":"What a candidate can do and what they will do in a given role","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":117,"name":"DDI's Leadership Assessment","category":"Employment","keeper":"DDI","cluster":1,"measures":"personality and judgement on leadership competencies","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":118,"name":"N-Score","category":"Consumer","keeper":"Nielsen","cluster":2,"measures":"casting and endorsement potential of a wide array of celebrities—actors, athletes, musicians and well-known personalities","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":119,"name":"Qi-Score","category":"Consumer","keeper":"Nielsen","cluster":2,"measures":"endorsement potential of atheletes","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":120,"name":"Mylife’s Reputation Score","category":"Social/Cultural Life","keeper":"Mylife","cluster":5,"measures":"The online reputation of an individual","scenario":"Getting a job","type":"automatically calculated score"},
+{"index":121,"name":"Microsoft Team’s Productivity Score","category":"Employment","keeper":"Microsoft Team","cluster":1,"measures":"How individuals in your organization utilize available technology and compares this to similar enterprises.","scenario":"Getting promoted","type":"automatically calculated score"},
+{"index":122,"name":"Trip Advisor's TripCollective","category":"Social/Cultural Life","keeper":"Trip Advisor","cluster":5,"measures":"How engaged and involved a user is on Trip Advisor","scenario":"Articulating opinions in publics","type":"aggregated rating"},
+{"index":123,"name":"FICO® Bankcard Score","category":"Credit Score","keeper":"Fair Issac Corporation (FICO)","cluster":3,"measures":"creditworthiness","scenario":"Granted a credit card","type":"automatically calculated score"},
+{"index":124,"name":"FICO® Mortgage Score","category":"Credit Score","keeper":"Fair Issac Corporation (FICO)","cluster":3,"measures":"creditworthiness","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":125,"name":"FICO® Score 2 (Experian/Fair Isaac Risk Model); FICO® Score 5 (Equifax Beacon 5.0); FICO® Score 4 (TransUnion FICO® Risk Score 04)","category":"Credit Score","keeper":"Fair Issac Corporation (FICO)","cluster":3,"measures":"creditworthiness","scenario":"Granted a mortgage","type":"automatically calculated score"},
+{"index":126,"name":"Google Ad’s Price Per Click (PPC)","category":"Consumer","keeper":"Google","cluster":2,"measures":"price for advertisement for marketers","scenario":"Shopping online","type":"automatically calculated score"},
+{"index":127,"name":"Square's Loyalty Program","category":"Consumer","keeper":"Square","cluster":2,"measures":"how often a customer comes into the store, how much they purchase as compared to non-loyalty patrons","scenario":"Shopping online","type":"aggregated rating"}],
+"links": [
+{"source":1, "target":120, "type":"solid"},
+{"source":1, "target":20, "type": "dotted"},
+{"source":2, "target":4, "type": "dotted"},
+]
+};
+
+// add a radius to each node
+var nodes = data.nodes;
+nodes.forEach( o => { o.radius = 10; })
+var groups = d3.nest()
+    .key(function(d) { return d.category; })
+    .entries(nodes);
+var scenarionodes = d3.nest()
+  .key(function(d) { return d.scenario; })
+  .entries(nodes);
+
+var num_clusters = Object.keys(groups).length;
+var num_nodes = nodes.length;
+var scenarios_obj = Object.values(scenarionodes);
+var scenarios = [];
+var categories_obj = Object.values(groups);
+var categories = [];
+var cat_centers = [];
+var coordinates = [
+  [margin, margin],
+  [width/2, margin],
+  [width - margin, margin],
+  [margin, height/2],
+  [width - margin, height/2],
+  [margin, height - margin],
+  [width/2, height - margin],
+  [width - margin, height - margin]
+];
+// assign the center points for the categorical node spread
+
+// force each node to cluster around the center point that corresponds to its category
+// force specfic nodes (in an array of nodes) to cluster around the center 
+categories_obj.forEach((category) => {
+  categories.push(category.key);
+});
+for (i=0; i < categories.length; i++) {
+  cat_centers[i] = coordinates[i];
+}
+
+scenarios_obj.forEach((scenario) => {
+  scenarios.push(scenario.key);
+});
+console.log(scenarios);
+// Assigns colors for each category
+var color = d3.scaleSequential(d3.interpolateRainbow)
+    .domain(d3.range(num_clusters));
+
+// go through data, convert cluster to number, add random values for x and y
+nodes.forEach((node)=>{
+    node.x = Math.cos(node.cluster / num_clusters * 2 * Math.PI) * 150 + width / 2 + Math.random();
+    node.y = Math.sin(node.cluster / num_clusters * 2 * Math.PI) * 150 + height / 2 + Math.random();
+})
+
+function xfilter(i) {
+  // needs to return a d3 forceX
+  // given a scenario, if the scenario matches, assign the center point x, else assign 
+  // the coordinates of the cluster
+    return d3.forceX(function(d){
+      if (d.scenario === scenarios[i]) {
+        return width/2;
+      } else {
+        return coordinates[d.cluster][0];
+      }
+      
+    });
+}
+function yfilter(i) {
+  // needs to return a d3 forceY
+    return d3.forceY(function(d){
+      if (d.scenario == scenarios[i]) {
+        return height/2;
+      } else {
+        return coordinates[d.cluster][1];
+      }
+    });
+}
+var xforce = d3.forceX(function(d){
+  // return cat_centers[d.cluster][0];
+  return coordinates[d.cluster][0];
+});
+var yforce = d3.forceY(function(d){
+  // return cat_centers[d.cluster][1];
+  return coordinates[d.cluster][1];
+});
+var simulation = d3.forceSimulation(data.nodes)
+
+  // keep entire simulation balanced around screen center
+  .force('center', d3.forceCenter(width/2, height/2))
+
+  .force('x', xforce)
+  .force('y', yforce)
+  // apply collision with padding
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+
+  .on('tick', layoutTick)
+  .nodes(nodes);
+  
+var svg = d3.select('body').append('svg')
+    .attr('width', width)
+    .attr('height', height);
+
+// create the tooltip
+var tooltip = d3.select("body")
+  .append("div")
+  .attr('style', 'position:absolute; opacity:0;')
+  .attr("id", "tooltip")
+  .style("color", "white")
+  .style("background-color", "black")
+  .style("border", "solid")
+  .style("border-width", "1px")
+  .style("border-radius", "5px")
+  .style("padding", "5px");
+
+    // Three function that change the tooltip when user hover / move / leave a cell
+var mouseover = function(d) {
+    tooltip
+      .style("opacity", 1)
+    d3.select(this)
+      .style("stroke", "black")
+      .style("opacity", 1)
+  }
+  var mousemove = function(d) {
+    
+    tooltip
+      .html("<span class='category'>" + d.category + "</span><br>" + d.name + "<br>index: " + d.index)
+      .style("left", (d3.mouse(this)[0]+70) + "px")
+      .style("top", (d3.mouse(this)[1]) + "px")
+  }
+  var mouseleave = function(d) {
+    tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("stroke", "none")
+  }
+  
+var node = svg.selectAll('circle')
+  .data(nodes)
+  .enter().append('circle')
+  .attr('class', 'bubbles')
+    .style('fill', function (d) { return color(d.cluster/7); })
+    .on('mouseover', mouseover)
+    .on('mouseleave', mouseleave)
+    .on('mousemove', mousemove);
+  
+function layoutTick (e) {
+  node
+    .attr('cx', function (d) { return d.x; })
+    .attr('cy', function (d) { return d.y; })
+    .attr('r', function (d) { return d.radius; });
+}
+
+
+d3.select("#recenter").on('click', function () {
+  simulation
+  .force('x', d3.forceX(width/2))
+  .force('y', d3.forceY(height/2))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#disperse").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+
+d3.select("#job").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(0))
+  .force('y', yfilter(0))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#college").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(1))
+  .force('y', yfilter(1))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#promoted").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(2))
+  .force('y', yfilter(2))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#shopping").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(3))
+  .force('y', yfilter(3))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#house").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(4))
+  .force('y', yfilter(4))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+    </script>
+  </body>
+</html>
