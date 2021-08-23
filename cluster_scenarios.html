@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Digital Due Process: Scoring EcoSystem Map</title>
+    <style>
+      .bubbles {
+        stroke-width: 1px;
+        stroke: white;
+      }
+      .bubbles:hover {
+        stroke: black;
+      }
+      #tooltip {
+        font-family:Arial, Helvetica, sans-serif;
+      }
+      .category { text-transform: uppercase; font-size:.7em;}
+    </style>
+  </head>
+
+  <body>
+    <button id="recenter">Recenter</button>
+    <button id="disperse">Disperse</button><br/>
+    <button id="job">Getting a job</button>
+    <button id="college">Getting into college</button>
+    <button id="promoted">Getting promoted</button>
+    <button id="shopping">Shopping Online</button>
+    <button id="house">Purchasing a House</button>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/d3-force-cluster@latest"></script>
+    <script>
+
+var width = 1200,
+    height = 700,
+    padding = 1.5, // separation between same-color nodes
+    clusterPadding = 50, // separation between different-color nodes
+    maxRadius = 10,
+    margin = 150;
+  
+    var nodes = [];
+var data = {
+  "nodes":[]
+};
+d3.csv("Entities-airtable-modified.csv", function(d){
+  // construct objects based on the csv
+  // name, category, keeper, scenarios, type
+  // for (i=0; i<d.length; i++) {
+  //   nodes[i].name = d[i]['Name'];
+  //   nodes[i].category = d[i]['Category'];
+  //   nodes[i].keeper = d[i]['Keeper'];
+  //   nodes[i].scenarios = d[i]['Scenarios'].split(',');
+  //   nodes[i].type = d[i]['Type'];
+  // }
+  nodes = d;
+  console.log(nodes);
+});
+// add a radius to each node
+var nodes = data.nodes;
+nodes.forEach( o => { o.radius = 10; })
+
+var groups = d3.nest()
+    .key(function(d) { return d.Category; })
+    .entries(nodes);
+
+
+var scenarionodes = d3.nest()
+  .key(function(d) { return d.Scenarios; })
+  .entries(nodes);
+
+var num_clusters = Object.keys(groups).length;
+var num_nodes = nodes.length;
+var scenarios_obj = Object.values(scenarionodes);
+var scenarios = [];
+var categories_obj = Object.values(groups);
+var categories = [];
+var cat_centers = [];
+var coordinates = [
+  [margin, margin],
+  [width/2, margin],
+  [width - margin, margin],
+  [margin, height/2],
+  [width - margin, height/2],
+  [margin, height - margin],
+  [width/2, height - margin],
+  [width - margin, height - margin]
+];
+// assign the center points for the categorical node spread
+
+// force each node to cluster around the center point that corresponds to its category
+// force specfic nodes (in an array of nodes) to cluster around the center 
+categories_obj.forEach((category) => {
+  categories.push(category.key);
+});
+for (i=0; i < categories.length; i++) {
+  cat_centers[i] = coordinates[i];
+}
+
+scenarios_obj.forEach((scenario) => {
+  scenarios.push(scenario.key);
+});
+// console.log(scenarios);
+// Assigns colors for each category
+var color = d3.scaleSequential(d3.interpolateRainbow)
+    .domain(d3.range(num_clusters));
+
+// go through data, convert cluster to number, add random values for x and y
+nodes.forEach((node)=>{
+    node.x = Math.cos(node.cluster / num_clusters * 2 * Math.PI) * 150 + width / 2 + Math.random();
+    node.y = Math.sin(node.cluster / num_clusters * 2 * Math.PI) * 150 + height / 2 + Math.random();
+})
+
+function xfilter(i) {
+  // needs to return a d3 forceX
+  // given a scenario, if the scenario matches, assign the center point x, else assign 
+  // the coordinates of the cluster
+    return d3.forceX(function(d){
+      if (d.scenario === scenarios[i]) {
+        return width/2;
+      } else {
+        return coordinates[d.cluster][0];
+      }
+      
+    });
+}
+function yfilter(i) {
+  // needs to return a d3 forceY
+    return d3.forceY(function(d){
+      if (d.scenario == scenarios[i]) {
+        return height/2;
+      } else {
+        return coordinates[d.cluster][1];
+      }
+    });
+}
+var xforce = d3.forceX(function(d){
+  // return cat_centers[d.cluster][0];
+  return coordinates[d.cluster][0];
+});
+var yforce = d3.forceY(function(d){
+  // return cat_centers[d.cluster][1];
+  return coordinates[d.cluster][1];
+});
+var simulation = d3.forceSimulation(data.nodes)
+
+  // keep entire simulation balanced around screen center
+  .force('center', d3.forceCenter(width/2, height/2))
+
+  .force('x', xforce)
+  .force('y', yforce)
+  // apply collision with padding
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+
+  .on('tick', layoutTick)
+  .nodes(nodes);
+  
+var svg = d3.select('body').append('svg')
+    .attr('width', width)
+    .attr('height', height);
+
+// create the tooltip
+var tooltip = d3.select("body")
+  .append("div")
+  .attr('style', 'position:absolute; opacity:0;')
+  .attr("id", "tooltip")
+  .style("color", "white")
+  .style("background-color", "black")
+  .style("border", "solid")
+  .style("border-width", "1px")
+  .style("border-radius", "5px")
+  .style("padding", "5px");
+
+    // Three function that change the tooltip when user hover / move / leave a cell
+var mouseover = function(d) {
+    tooltip
+      .style("opacity", 1)
+    d3.select(this)
+      .style("stroke", "black")
+      .style("opacity", 1)
+  }
+  var mousemove = function(d) {
+    
+    tooltip
+      .html("<span class='category'>" + d.category + "</span><br>" + d.name + "<br>index: " + d.index)
+      .style("left", (d3.mouse(this)[0]+70) + "px")
+      .style("top", (d3.mouse(this)[1]) + "px")
+  }
+  var mouseleave = function(d) {
+    tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("stroke", "none")
+  }
+  
+var node = svg.selectAll('circle')
+  .data(nodes)
+  .enter().append('circle')
+  .attr('class', 'bubbles')
+    .style('fill', function (d) { return color(d.cluster/7); })
+    .on('mouseover', mouseover)
+    .on('mouseleave', mouseleave)
+    .on('mousemove', mousemove);
+  
+function layoutTick (e) {
+  node
+    .attr('cx', function (d) { return d.x; })
+    .attr('cy', function (d) { return d.y; })
+    .attr('r', function (d) { return d.radius; });
+}
+
+
+d3.select("#recenter").on('click', function () {
+  simulation
+  .force('x', d3.forceX(width/2))
+  .force('y', d3.forceY(height/2))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#disperse").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+
+d3.select("#job").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(0))
+  .force('y', yfilter(0))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#college").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(1))
+  .force('y', yfilter(1))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#promoted").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(2))
+  .force('y', yfilter(2))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#shopping").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(3))
+  .force('y', yfilter(3))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+d3.select("#house").on('click', function () {
+  simulation
+  .force('x', xforce)
+  .force('y', yforce)
+  .alphaTarget(0.5)
+  .restart();
+  simulation
+  .force('x', xfilter(4))
+  .force('y', yfilter(4))
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .alphaTarget(0.5)
+  .restart()
+});
+
+    </script>
+  </body>
+</html>
