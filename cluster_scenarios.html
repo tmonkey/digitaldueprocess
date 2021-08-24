@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Digital Due Process: Scoring EcoSystem Map</title>
+    <style>
+      body { background-color:#111;}
+      .bubbles {
+        stroke-width: 1px;
+        stroke: black;
+      }
+      .bubbles:hover {
+        stroke: white;
+      }
+      #tooltip {
+        font-family:Arial, Helvetica, sans-serif;
+      }
+      .category { text-transform: uppercase; font-size:.7em;}
+    </style>
+  </head>
+
+  <body>
+    
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/d3-force-cluster@latest"></script>
+    <script>
+
+var width = 1400,
+    height = 800,
+    padding = 1, // separation between same-color nodes
+    clusterPadding = 50, // separation between different-color nodes
+    maxRadius = 10,
+    margin = 300;
+  
+var nodes = [];
+var data = {
+  "nodes":[]
+};
+
+const removeCommon = (first, second) => {
+   const spreaded = [...first, ...second];
+   return spreaded.filter(el => {
+      return !(first.includes(el) && second.includes(el));
+   })
+};
+
+d3.csv("Entities-airtable-modified.csv", function(d){
+  var nodes = [];
+  // construct objects based on the csv
+  // name, category, keeper, scenarios, type
+  for (i=0; i<d.length; i++) {
+    var tempnode = {
+      "name": d[i]['Name'],
+      "category": d[i]['Category'],
+      "keeper": d[i]['Keeper'],
+      "scenarios":d[i]['Scenarios'].split(','),
+      "type":d[i]['Type'],
+      "radius": (d[i]['Scenarios'].split(',').length)*5
+    }
+    nodes.push(tempnode);
+  }
+  var justScenarios = nodes.map(row => row.scenarios);
+  var uniqueScenarios = [];
+  justScenarios.forEach(v => {
+    uniqueScenarios = removeCommon(uniqueScenarios, v);
+  });
+    // radius should depend on number of times this score is used in any scenario
+    // Color code by category
+  var groups = d3.nest()
+  .key(function(d) { return d.category; })
+  .entries(nodes);
+
+  var num_clusters = Object.keys(groups).length;
+  var num_nodes = nodes.length;
+  var categories_obj = Object.values(groups);
+  var categories = [];
+  var cat_centers = [];
+  var coordinates = [
+    [0, 0],
+    [width/2, 0],
+    [width - margin, 0],
+    [0, height/3],
+    [width - margin, height/3],
+    [0, height - margin],
+    [width/2, height - margin],
+    [width - margin, height - margin]
+  ];
+  // force each node to cluster around the center point that corresponds to its category
+  // force specfic nodes (in an array of nodes) to cluster around the center 
+  categories_obj.forEach((category) => {
+    categories.push(category.key);
+  });
+  nodes.forEach(n => {
+    n.cluster = categories.indexOf(n.category);
+  });
+  console.log(nodes);
+  for (i=0; i < categories.length; i++) {
+    cat_centers[i] = coordinates[i];
+  }
+  // Assigns colors for each category
+  var color = d3.scaleSequential(d3.interpolateRainbow)
+    .domain(d3.range(num_clusters));
+  // go through data, convert cluster to number, add random values for x and y
+  nodes.forEach((node)=>{
+    node.x = Math.cos(node.cluster / num_clusters * 2 * Math.PI) * 150 + width / 2 + Math.random();
+    node.y = Math.sin(node.cluster / num_clusters * 2 * Math.PI) * 150 + height / 2 + Math.random();
+  });
+
+  // FORCES
+  var xforce = d3.forceX(function(d){
+    // return cat_centers[d.cluster][0];
+    return coordinates[d.cluster][0];
+  });
+  var yforce = d3.forceY(function(d){
+    // return cat_centers[d.cluster][1];
+    return coordinates[d.cluster][1];
+  });
+
+  // FORCE SIMULATION DECLARATION
+  var simulation = d3.forceSimulation(data.nodes)
+
+  // keep entire simulation balanced around screen center
+  .force('center', d3.forceCenter(width/2, height/2))
+  .force('x', xforce)
+  .force('y', yforce)
+  // apply collision with padding
+  .force('collide', d3.forceCollide(function (d) { return d.radius + padding; }))
+  .on('tick', layoutTick)
+  .nodes(nodes);
+
+  var svg = d3.select('body').append('svg')
+    .attr('width', width)
+    .attr('height', height);
+  // create the tooltip
+var tooltip = d3.select("body")
+  .append("div")
+  .attr('style', 'position:absolute; opacity:0;')
+  .attr("id", "tooltip")
+  .style("color", "white")
+  .style("background-color", "black")
+  .style("border", "solid")
+  .style("border-width", "1px")
+  .style("border-radius", "5px")
+  .style("padding", "5px");
+
+    // Three function that change the tooltip when user hover / move / leave a cell
+var mouseover = function(d) {
+    tooltip
+      .style("opacity", 1)
+    d3.select(this)
+      .style("stroke", "white")
+      .style("opacity", 1)
+  }
+  var mousemove = function(d) {
+    
+    tooltip
+      .html("<span class='category'>" + d.category + "</span><br>" + d.name)
+      .style("left", (d3.mouse(this)[0]+70) + "px")
+      .style("top", (d3.mouse(this)[1]) + "px")
+  }
+  var mouseleave = function(d) {
+    tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("stroke", "none")
+  }
+  
+var node = svg.selectAll('circle')
+  .data(nodes)
+  .enter().append('circle')
+  .attr('class', 'bubbles')
+    .style('fill', function (d) { return color(d.cluster/7); })
+    .on('mouseover', mouseover)
+    .on('mouseleave', mouseleave)
+    .on('mousemove', mousemove);
+  
+function layoutTick (e) {
+  node
+    .attr('cx', function (d) { return d.x; })
+    .attr('cy', function (d) { return d.y; })
+    .attr('r', function (d) { return d.radius; });
+}
+
+}); // END OF CSV LOAD
+
+    </script>
+  </body>
+</html>
