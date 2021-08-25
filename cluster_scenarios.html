@@ -176,7 +176,7 @@ var mouseover = function(d) {
     
     tooltip
       .html("<span class='category'>" + d.category + "</span><br>" + d.name)
-      .style("left", (d3.mouse(this)[0]+70) + "px")
+      .style("left", (d3.mouse(this)[0]+50) + "px")
       .style("top", (d3.mouse(this)[1]) + "px")
   }
   var mouseleave = function(d) {
@@ -190,7 +190,7 @@ var mouseover = function(d) {
     .data(nodes)
     .enter().append('circle')
     .attr('class', 'bubbles')
-      .style('fill', function (d) { return color(d.cluster/7); })
+      .style('fill', function (d) { return color(d.cluster/categories.length); })
       .on('mouseover', mouseover)
       .on('mouseleave', mouseleave)
       .on('mousemove', mousemove);
@@ -279,11 +279,7 @@ var mouseover = function(d) {
     el.id = "scenario" + i;
     el.value = i;
     el.onclick = function() { 
-      simulation
-      .force('x', xforce)
-      .force('y', yforce)
-      .alphaTarget(0.5)
-      .restart();
+
       simulation
       .force('x', xfilter(this.value))
       .force('y', yfilter(this.value))
