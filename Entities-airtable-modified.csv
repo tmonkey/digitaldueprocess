@@ -1,0 +1,133 @@
+﻿Name,Category,Keeper,Measures,Scenarios,Type
+Myers Briggs Type Indicator,Employment,Myers & Briggs  Foundation,psychological personality preference,"Get a job,Find a date",exam-type
+SAT,Education,College Board,high school education and college preparedness,Get into college,exam-type
+Hirevue's Pre-Employment Assessment,Employment,Hirevue,potential to be a high performing employee,"Get a job,Get a promotion",exam-type
+Turnitin's Similiarity Score,Education,"Turnitin, LLC, a subsidiary of Advance Publications",how similiar the submitted content is to existing content (i.e. did the author plagiarize),Get into college,automatically calculated score
+Expected Family Contribution (EFC),Education,US Department of Education,Original purpose: how much federal student financial assistance is offered by the U.S. Dept. of Education.,Get into college,automatically calculated score
+PMAP (Performance Management Appraisal Program),Public Services,Department of Health and Human Services (HHS),The performance of a government employee in HHS ,Get a promotion,automatically calculated score
+Sift's Trust Score,Consumer,Sift,Consumer's trustworthiness and likelihood to commit credit card fraud.,Buy a book online,automatically calculated score
+SecureAuth's Risk Score,Consumer,SecureAuth,Determine a web visitor's risk level,Buy a book online,automatically calculated score
+ACT,Education,"ACT, Inc",,Get into college,exam-type
+GPA,Education,Each individual educational institution,academic achievement,Get into college,aggregated rating
+Regents Exam (New York State Test),Education,New York State Education Department,Proficiency in subjects learned in high school,Get into college,aggregated rating
+Advanced Placement (AP),Education,college board,how qualified a student is to receive college credit and placement.,Get into college,exam-type
+TOEFL iBT®,Education,ETS (Educational Testing Service),English proficiency in an academic context,Get into college,exam-type
+IELTS,Education,"It is jointly managed by the British Council, IDP: IELTS Australia and Cambridge Assessment English","One's ability to listen, read, write and speak in English",Get into college,exam-type
+DuoLingo English Test,Education,DuoLingo,English proficiency; assessment of real-world language ability and measures real-world usage,Get into college,exam-type
+Cambridge English Scale Score,Education,Cambridge Assessment English. Part of the University of Cambridge,English proficiency for career or higher education purposes.,Get into college,exam-type
+TOEIC® Listening and Reading Test,Education,ETS (Educational Testing Service),English listening and reading proficiency in workplace,Get into college,exam-type
+TOEIC® Speaking and Writing Test,Education,ETS (Educational Testing Service),English speaking and writing proficiency in workplace,Get into college,exam-type
+"Common European Framework of Reference (CEFR) for Languages: Learning, Teaching, Assessment",Education,Council of Europe,Proficiency in european languages,Get into college,exam-type
+h-index,Education,The index is proposed by J.E. Hirsch in 2005 and published in the Proceedings of the National Academy of Sciences of the United States of America.,The cumulative impact of an author's scholarly output and performance. ,Get a promotion,automatically calculated score
+Rate My Professors,Education,"Cheddar, a streaming video company","How well a professor teaches the course material, and how helpful they are both inside and outside of the classroom. Is the professor available for additional help after class or during office hours? Is the professor approachable, nice and easy to communicate with?",Get a promotion,aggregated rating
+Canvas's Engagement Index,Education,Canvas,Degree of student participation and engagement,Get a job,automatically calculated score
+Grammarly's Readability Score,Education,Grammarly,Readability. It claims to measure how easy or difficult it is to understand a piece of text.,Get a job,automatically calculated score
+iClicker's Score,Education,REEF Education,Performance points refer to whether or not the student got the question correct; participation points refer to whether or not the student submitted an answer.,Get a job,automatically calculated score
+Flesch reading-ease score (FRES),Education,developed under contract to the U.S. Navy in 1975 by J. Peter Kincaid and his team,Readability,Get a job,automatically calculated score
+Flesch–Kincaid Grade Level,Education,Bain & Company Partner Fred Reichheld,Readability,Get a job,automatically calculated score
+Zillow's Home Value Index (ZHVI),Consumer,Zillow,The typical home value and market changes across a given region and housing type,Sell my house,automatically calculated score
+Zillow's Zestimate,Consumer,Zillow,Estimated market value for a property,"Sell my house,Rent an apartment",automatically calculated score
+Redfin's Estimate,Consumer,Redfin,Estimated market value for a property,"Sell my house,Rent an apartment",automatically calculated score
+Walk Score’s Transit Score,Consumer,Walk Score,how well a location is served by public transportation,"Sell my house,Rent an apartment",automatically calculated score
+Walk Score's Bike Score,Consumer,Walk Score,whether an area is good for biking.,"Sell my house,Rent an apartment",automatically calculated score
+Walk Score’s Walk Score,Consumer,Walk Score,"walkability of an area, including access to amenities","Sell my house,Rent an apartment",automatically calculated score
+National Walkability Index (NWI),Public Services,United States Environmental Protection Agency,walkability of an area,Sell my house,automatically calculated score
+Net Promoter Score® (NPS®).,Consumer,Bain & Company Partner Fred Reichheld,Customer loyalty. It aim is to establish what percentage of customers are happy with a marketer's product or service enough to recommend it to others.,Buy a book online,automatically calculated score
+Customer Satisfaction (CSAT) Score ,Consumer,Bain & Company Partner Fred Reichheld,Customer's satisfaction with a product/service,Buy a book online,automatically calculated score
+Customer Effort Score (CES),Consumer,"The Corporate Executive Board (CEB Global, now Gartner)",Level of effort that a customer experienced with a particular interaction.,Buy a book online,automatically calculated score
+Next Step Tool (NST) for Homeless Youth,Public Services,"This score is generated by OrgCode Consulting Inc. and Community Solutions (other options exist, and it is not mandatory to use this one -housing agencies can choose)",The vulnerability of youth.,Qualify for welfare benefits,automatically calculated score
+VI-SPDAT (Vulnerability Index - Service Prioritization Decision Assistance Tool),Healthcare,"Department of Housing and Urban Development (HUD), OrgCode Consulting","Degree of acuity, risk and prioritization when providing assistance to homeless and at-risk of homelessness persons.",Qualify for welfare benefits,automatically calculated score
+SNAP benefits qualification,Public Services,"United States Department of Agriculture (USDA), Food and Nutrition Service",How much assistance a  household needs for regular consumption of nutritious food,Qualify for welfare benefits,automatically calculated score
+Tinder's Desirability Score,Social/Cultural Life,Tinder,Desirability in regards to dating ,Find a date,automatically calculated score
+OkCupid's Match Score,Social/Cultural Life,OkCupid,Compability between two potential partners,Find a date,automatically calculated score
+DNA Match Confidence Score,Social/Cultural Life,AncestyDNA,Degree of relatedness between two individuals,Find a date,automatically calculated score
+STD Testing Score,Healthcare,Clinics and data subjects themselves (when administering self-tests),"Likeihood to have a particular STD, namely syphilis, gonorrhea, and herpes",Find a date,automatically calculated score
+Reddit's Karma Points,Social/Cultural Life,Reddit,The degree of contirbution to the community.,Have your voice heard,aggregated rating
+Facebook's Built-in Trust Score,Social/Cultural Life,Facebook,Ths score indicates the reliability of the user's flagging behavior.,Have your voice heard,automatically calculated score
+Twitter Bot Score,Social/Cultural Life,Botometer (the tool was built by researchers at the University of Southern California and the Center for Complex Networks and Systems Research at Indiana University),Likelihood for a Twitter account to be a bot.,Have your voice heard,automatically calculated score
+reCAPTCHA Score,Social/Cultural Life,Google,Likelihood for a user to be a human/bot.,Have your voice heard,automatically calculated score
+Metascore,Social/Cultural Life,Metacritic (a Red Ventures Company),How well received the work is.,Pick a movie to watch,aggregated rating
+Tomatometer,Social/Cultural Life,Rotten Tomatoes,Ciritlal recommmendation of content,Pick a movie to watch,aggregated rating
+"""Match"" Score",Social/Cultural Life,Netflix,How likely a user will enjoy a particular TV shows or movie,Pick a movie to watch,automatically calculated score
+Rider rating,Consumer,Uber,How good/pleasant/well-behaved a passenger is,,aggregated rating
+"Rider rating
+",Consumer,Lyft,How good/pleasant/well-behaved a passenger is,,aggregated rating
+Amazon's dynamic pricing (*Score comes in the form of a price for the buyer),Consumer,Amazon,Best fit for consumer,Buy a book online,automatically calculated score
+Investyles,Consumer,Equifax,direct-measured financial assets and specific financial tendencies ,"Buy a book online,Get a mortgage,Get car insurance,Get a new credit card,Rent an apartment",automatically calculated score
+Income360,Consumer,Equifax,estimate of household income,"Buy a book online,Get a mortgage,Get car insurance,Get a new credit card,Rent an apartment",automatically calculated score
+WealthComplete,Consumer,Equifax,estimate of consumers’ household-level total asset wealth and total deposit wealth (wealthCompleteDigital_ps).,"Buy a book online,Get a mortgage,Get car insurance,Get a new credit card,Rent an apartment",automatically calculated score
+"Affluence Index
+
+",Consumer,Equifax,household spending capacity,"Buy a book online,Get a mortgage,Get car insurance,Get a new credit card,Rent an apartment",automatically calculated score
+CreditStyles Pro,Consumer,Equifax,"estimated credit availability, needs, and usage","Buy a book online,Get a mortgage,Get car insurance,Get a new credit card,Rent an apartment",automatically calculated score
+Aggregated FICO® Scores,Credit Score,Equifax,aggregated model of  credit risk assessment measure ,"Buy a book online,Get a mortgage,Get car insurance,Get a new credit card,Rent an apartment",automatically calculated score
+Small Business Assets,Consumer,Equifax,assets invested by small businesses,"Buy a book online,Get a mortgage,Get car insurance,Get a new credit card,Rent an apartment",automatically calculated score
+Ability to Pay Index,Consumer,Equifax,"ranks households from 1 to 1,000 based on their likely economic capacity.","Buy a book online,Get a mortgage,Get car insurance,Get a new credit card,Rent an apartment",automatically calculated score
+PROS's dynamic pricing,Consumer,PROS,Seat availability & customer demand for airplane flight to set prices to optimize profit,Buy a plane ticket,automatically calculated score
+TransUnion CreditVision,Credit Score,TransUnion ,creditworthiness,"Get a mortgage,Get car insurance,Get a new credit card,Get a job,Rent an apartment",automatically calculated score
+Symmetry® Episode Risk Groups® (ERG®),Healthcare,Optum ,Risk cost as proxy of health risk,,automatically calculated score
+Optum® Symmetry® Risk Groups® (PRG),Healthcare,Optum ,Risk cost as proxy of health risk,,automatically calculated score
+ACA Individual Risk Scores,Healthcare,Department of Health and Human Services/Affordable Care Act,Risk in costs of an insurance provider enrolling sicker individuals - supposed to minimize adverse changes in insurance market after nondiscriminatory policy changes,Get a medical appointment,automatically calculated score
+Acute Physiology and Chronic Health Evalutation (APACHE) II,Healthcare,William Knaus (researcher),Severity of disease,,automatically calculated score
+Simplified Acute Physiology Scores (SAPS) II,Healthcare,Jean-Roger LeGall (researcher),Mortality estimate,,automatically calculated score
+Simple Triage Scoring System (STSS),Healthcare,National to state to individual hospital level guidance. Modern medical triage originated from war treatment,Priority score based on who is in most need of treatment,,automatically calculated score
+"FICO AutoScore Fair Issac Corporation (FICO); individually calculated by three major national credit bureaus (Experian, Equifax, TransUnion)",Credit Score,Fair Issac Corporation (FICO),creditworthiness,Get car insurance,automatically calculated score
+VantageScore® 4.0,Credit Score,"VantageScore Solutions, LLC. (generated); Experian, Equifax, TransUnion (market the model, sell the credit scores, and manage credit report data)",creditworthiness,"Get a mortgage,Get a job,Rent an apartment,Get a new credit card,Find a date",automatically calculated score
+FICO Expansion Score ,Credit Score,Fair Issac Corporation (FICO),creditworthiness,"Get a mortgage,Get car insurance,Get a new credit card,Get a job,Rent an apartment",automatically calculated score
+Equifax Decision 360,Credit Score,Equifax Inc.,creditworthiness,"Get a mortgage,Get car insurance,Get a new credit card,Get a job,Rent an apartment",automatically calculated score
+McGill pain questionnaire ,Healthcare,Dr. Melzack from McGill University ,pain (quality and intensity),Get a medical appointment,automatically calculated score
+FICO® Safe Driving Score,Credit Score,Fair Issac Corporation (FICO),"driver risk and safety based on driving behaviors, which facilitates consistency and fairness","Get car insurance,Get a promotion",automatically calculated score
+RiskView,Credit Score,LexisNexis,creditworthiness,"Get a mortgage,Get car insurance,Get a new credit card,Get a job,Rent an apartment",automatically calculated score
+FICO® Score XD,Credit Score,Fair Issac Corporation (FICO),creditworthiness,"Get a mortgage,Get car insurance,Get a new credit card,Get a job,Rent an apartment",automatically calculated score
+SchoolDigger Ranking,Education,Claarware LLC.,school performance and quality,Choose a high school for your child,aggregated rating
+Optum® Symmetry® EBM Connect®,Healthcare,Optum,Patient care's ompliance with medical procedure,,automatically calculated score
+Mosaic USA Consumer Lifestyle Segmentation,Consumer,Experian,Mosaic’s data segments the US into 19 overarching groups and 71 underlying types,Buy a book online,automatically calculated score
+ASCVD (atherosclerotic cardiovascular disease) risk score,Healthcare,The American College of Cardiology,risk of having a cardiovascular problem,Get a medical appointment,automatically calculated score
+ASSIGN (cardiovascualr disease risk score),Healthcare,"Dundee University, Scotland",risk of cardiovascular disease,Get a medical appointment,automatically calculated score
+Framingham risk score (FRS),Healthcare,National Institutes of Health,risk of cardiovascular disease,Get a medical appointment,automatically calculated score
+QRISK®3,Healthcare,developed by doctors and academics working in the UK National Health Service,risk of developing a heart attack or stroke over the next ten years,Get a medical appointment,automatically calculated score
+COMPAS ,Public Services,Northpointe,risk of recidivism,,automatically calculated score
+"Allegheny Family Screening Tool, Predictive Risk Model (PRM)",Public Services,Allegheny County Department of Human Services,whether or screen-in a referral for investigation,Qualify for welfare benefits,automatically calculated score
+Allegheny County Community Need Index (CNI),Public Services,Allegheny County Department of Human Services,Community needs at greater risk of further economic decline,Qualify for welfare benefits,automatically calculated score
+Child Opportunity Index 2.0,Public Services,"The Institute for Child, Youth and Family Policy, Brandeis University", An index of neighborhood features that help children develop in a healthy way,Qualify for welfare benefits,automatically calculated score
+Get with the Guidelines–Heart Failure Risk Score (GWTG-HF Risk Score),Healthcare,The American Heart Association,In-hospital mortality for patients with acute heart failure,Get a medical appointment,automatically calculated score
+The Society of Thoracic Surgeon's Short Term Risk Calculator,Healthcare,The Society of Thoracic Surgeons,Patient's risk of complication and death with most common cardiac surgeries,,automatically calculated score
+Estimated glomerular filtration rate (eGFR) ,Healthcare,National Kidney Foudnation,Glomerular filtration rate (kidney function) ,,automatically calculated score
+Kindey Donor Risk Index (KDRI),Healthcare,Organ Procurement and Transplantation Network,Risk of donor kidney graft failure (viability of potential kidney donor),,automatically calculated score
+STONE Score for Uncomplicated Ureteral Stone,Healthcare,MD Calc,Risk of ureteral stone in patients with flank pain,Get a medical appointment,automatically calculated score
+Rectal Cancer Survival Calculator,Healthcare,MD Anderson Cancer Center,Likelihood of survival 1-5 years after renal cancer diagnosis ,Get a medical appointment,automatically calculated score
+Breast Cancer Risk Assessment Tool (the Gail Model),Healthcare,National Cancer Institute,"Risk of developing breast cancer over 5-years and over lifetime for women without prior history of breast cancer, DCIS, or LCIS ",,automatically calculated score
+Breast Cancer Surveillance Consortium (BCSC) Risk Calculator ,Healthcare,Breast Cancer Surveillance Consortium,"Risk of developing breast cancer over 5-years and 10-years for women without prior diagnosis of breast cancer or DCIS, breast augmentation, or prior masectomy",Get a medical appointment,automatically calculated score
+Osteoporosis Risk SCORE,Healthcare,MD App,"Risk level (low, medium, or high) of low bone density for women ",Get a medical appointment,automatically calculated score
+Fracture Risk Assessment Tool (FRAX),Healthcare,"Centre for Metabolic Bone Diseases, University of Sheffield, UK",Risk of a hip fracture or other major osteoporotic fracture over 10-years ,Get a medical appointment,automatically calculated score
+Apple Card program score,Consumer,Apple Inc. and Goldman Sachs (issuing back of the Apple Card),creditworthiness,Get a new credit card,automatically calculated score
+Consumer Report Rating,Consumer,Consumer Report,how useful/worth it a product is,Buy a book online,aggregated rating
+Niche College Ranking,Education,Niche,"how ""good"" a college is",Get into college,aggregated rating
+Niche High School Ranking,Education,Niche,"how ""good"" a high school is",Get into college,aggregated rating
+Niche Neighborhood Ranking,Consumer,Niche,"how ""good"" a neighborhood is",Sell my house,aggregated rating
+US News College Ranking,Education,US News,"how ""good"" a college is",Get into college,aggregated rating
+US News High School Ranking,Consumer,US News,"how ""good"" a high school is","Sell my house,Choose a high school for your child",aggregated rating
+USNew’s Neighborhood Ranking,Consumer,USNews,"how ""good"" a neighborhood is","Sell my house,Choose a high school for your child",aggregated rating
+Predpol's Location Based Proactive Policing Tool,Public Services,Predpol (now Geolitica),predict where crimes will occur,,automatically calculated score
+IBM Kenexa's Candidate Assessment,Employment,IBM,how well-suited a job candidate is,"Get a job,Get a promotion",automatically calculated score
+ICIMS's Candidate Assessment,Employment,ICIMS,how well-suited a job candidate is,"Get a job,Get a promotion",automatically calculated score
+Lever's Candidate Assessment,Employment,Lever,how well-suited a job candidate is,"Get a job,Get a promotion",automatically calculated score
+Hacker Rank's Exam Score,Employment,Hacker Rank,how good at programming a job candidate is,"Get a job,Get a promotion",automatically calculated score
+The Athena Quotient (AQ),Employment,Athena Assessment,"""the objective, accurate, measurement of the all-important, all-critical dimension of judgment, the same judgment that provides your unique value perspectives on life and work.""","Get a job,Get a promotion",automatically calculated score
+Hogan Personality Inventory (HPI),Employment,Hogan,bright-side personality – qualities that describe how we relate to others when we are at our best,"Get a job,Get a promotion",automatically calculated score
+Hogan Development Survey (HDS),Employment,Hogan,"The dark side of personality, which are qualities that emerge when people are stresses, bored, or simply not paying attention to their behavior that hinder productivity, damage reputations, and derail peoples’ chances of success.","Get a job,Get a promotion",automatically calculated score
+"Motives, Values, Preferences Inventory (MVPI)",Employment,Hogan,"Personality from the inside – the core goals, values, drivers, and interests that determine what we desire and strive to attain.","Get a job,Get a promotion",automatically calculated score
+The Caliper Profile,Employment,PSI Services / Caliper,An individual’s personality characteristics and individual motivations in order to predict on-the-job behaviors and potential.,"Get a job,Get a promotion",automatically calculated score
+Berke's Employment Assessment,Employment,Berke,What a candidate can do and what they will do in a given role,"Get a job,Get a promotion",automatically calculated score
+DDI's Leadership Assessment,Employment,DDI,personality and judgement on leadership competencies,"Get a job,Get a promotion",automatically calculated score
+N-Score,Consumer,Nielsen,"casting and endorsement potential of a wide array of celebrities—actors, athletes, musicians and well-known personalities","Get a job,Get a promotion",automatically calculated score
+Qi-Score,Consumer,Nielsen,endorsement potential of atheletes,"Get a job,Get a promotion",automatically calculated score
+Mylife’s Reputation Score,Social/Cultural Life,Mylife,The online reputation of an individual,"Get a job,Get a promotion",automatically calculated score
+Microsoft Team’s Productivity Score,Employment,Microsoft Teams,How individuals in your organization utilize available technology and compares this to similar enterprises.,Get a promotion,automatically calculated score
+Trip Advisor's TripCollective,Social/Cultural Life,Trip Advisor,How engaged and involved a user is on Trip Advisor,Have your voice heard,aggregated rating
+FICO® Bankcard Score,Credit Score,Fair Issac Corporation (FICO),creditworthiness,Get a new credit card,automatically calculated score
+FICO® Mortgage Score,Credit Score,Fair Issac Corporation (FICO),creditworthiness,Get a mortgage,automatically calculated score
+FICO® Score 2 (Experian/Fair Isaac Risk Model); FICO® Score 5 (Equifax Beacon 5.0); FICO® Score 4 (TransUnion FICO® Risk Score 04),Credit Score,Fair Issac Corporation (FICO),creditworthiness,"Get a mortgage,Get car insurance,Get a new credit card,Get a job,Rent an apartment",automatically calculated score
+Google Ad’s Price Per Click (PPC),Consumer,Google,price for advertisement for marketers,Buy a book online,automatically calculated score
+Square's Loyalty Program,Consumer,Square,"how often a customer comes into the store, how much they purchase as compared to non-loyalty patrons",Buy a book online,aggregated rating
+FICO 8 score,Credit Score,Fair Issac Corporation (FICO),creditworthiness,"Get a mortgage,Rent an apartment,Get a new credit card,Get car insurance,Get a job",automatically calculated score
